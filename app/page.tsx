@@ -11,8 +11,8 @@ export default function Home() {
   const anotherNonExistentFlag = useFeatureFlagEnabled("non-existent-flag");
 
   // Also test with direct posthog methods
-  const [directFlagValue, setDirectFlagValue] = useState<any>(undefined);
-  const [isFeatureEnabled, setIsFeatureEnabled] = useState<any>(undefined);
+  const [directFlagValue, setDirectFlagValue] = useState<boolean | string | undefined>(undefined);
+  const [isFeatureEnabled, setIsFeatureEnabled] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     if (posthog) {
@@ -112,7 +112,7 @@ export default function Home() {
                   fontSize: "0.9rem",
                 }}
               >
-                useFeatureFlagEnabled('something-that-doesnt-exist')
+                useFeatureFlagEnabled(&apos;something-that-doesnt-exist&apos;)
               </code>
               <div style={{ fontSize: "1.1rem" }}>
                 <strong style={{ color: "#4a5568" }}>Returns: </strong>
@@ -163,7 +163,7 @@ export default function Home() {
                   fontSize: "0.9rem",
                 }}
               >
-                useFeatureFlagEnabled('non-existent-flag')
+                useFeatureFlagEnabled(&apos;non-existent-flag&apos;)
               </code>
               <div style={{ fontSize: "1.1rem" }}>
                 <strong style={{ color: "#4a5568" }}>Returns: </strong>
@@ -215,7 +215,7 @@ export default function Home() {
                   fontSize: "0.9rem",
                 }}
               >
-                posthog.getFeatureFlag('something-that-doesnt-exist')
+                posthog.getFeatureFlag(&apos;something-that-doesnt-exist&apos;)
               </code>
               <div style={{ fontSize: "1.1rem" }}>
                 <strong style={{ color: "#4a5568" }}>Returns: </strong>
@@ -253,7 +253,7 @@ export default function Home() {
                   fontSize: "0.9rem",
                 }}
               >
-                posthog.isFeatureEnabled('something-that-doesnt-exist')
+                posthog.isFeatureEnabled(&apos;something-that-doesnt-exist&apos;)
               </code>
               <div style={{ fontSize: "1.1rem" }}>
                 <strong style={{ color: "#4a5568" }}>Returns: </strong>
@@ -391,7 +391,7 @@ export default function Home() {
               marginBottom: 0,
             }}
           >
-            📝 <strong>Note:</strong> Using a test key that won't connect to a
+            📝 <strong>Note:</strong> Using a test key that won&apos;t connect to a
             real PostHog instance. Replace with your actual PostHog key in{" "}
             <code
               style={{
