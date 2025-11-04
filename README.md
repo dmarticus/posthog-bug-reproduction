@@ -1,10 +1,10 @@
 # PostHog Feature Flag Bug Reproduction
 
-This Next.js app reproduces a reported bug where `useFeatureFlagEnabled()` returns `true` for non-existent feature flags.
+This Next.js app attempts to reproduce a reported bug where `useFeatureFlagEnabled()` returns `true` for non-existent feature flags.
 
 ## Bug Description
 
-When calling `useFeatureFlagEnabled('non-existent-flag')` with a flag that doesn't exist, the hook returns `true` instead of the expected `false` or `undefined`.
+When calling `useFeatureFlagEnabled('non-existent-flag')` with a flag that doesn't exist, the hook should return `false` or `undefined`.
 
 ## How to Run
 
