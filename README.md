@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PostHog Feature Flag Bug Reproduction
 
-## Getting Started
+This Next.js app reproduces a reported bug where `useFeatureFlagEnabled()` returns `true` for non-existent feature flags.
 
-First, run the development server:
+## Bug Description
 
+When calling `useFeatureFlagEnabled('non-existent-flag')` with a flag that doesn't exist, the hook returns `true` instead of the expected `false` or `undefined`.
+
+## How to Run
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd posthog-bug-reproduction
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. (Optional) Add your PostHog credentials:
+Create a `.env.local` file:
+```bash
+NEXT_PUBLIC_POSTHOG_KEY=your_actual_posthog_key
+NEXT_PUBLIC_POSTHOG_HOST=https://app.posthog.com
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Learn More
+## What to Look For
 
-To learn more about Next.js, take a look at the following resources:
+1. **On the page**: You'll see test results for various PostHog feature flag methods with non-existent flags
+2. **In the console**: Detailed logs showing the return values
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Expected Behavior
+- `useFeatureFlagEnabled('non-existent-flag')` should return `false` or `undefined`
+- `posthog.isFeatureEnabled('non-existent-flag')` should return `false` or `undefined`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Actual Behavior (if bug exists)
+- The methods may return `true` for non-existent flags
 
-## Deploy on Vercel
+## Test Cases
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The app tests the following scenarios:
+1. `useFeatureFlagEnabled('something-that-doesnt-exist')`
+2. `useFeatureFlagEnabled('non-existent-flag')`
+3. `posthog.getFeatureFlag('something-that-doesnt-exist')`
+4. `posthog.isFeatureEnabled('something-that-doesnt-exist')`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Files of Interest
+
+- `/app/page.tsx` - Main test page with feature flag checks
+- `/app/providers.tsx` - PostHog provider configuration
+- `/app/layout.tsx` - Root layout with provider wrapper
